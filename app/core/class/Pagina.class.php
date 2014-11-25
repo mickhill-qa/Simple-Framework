@@ -1,10 +1,25 @@
 <?php
+/*
+ *-------------------------------------------------------
+ *              Simple MVC - Mick Hill
+ *-------------------------------------------------------
+ * 
+ *  Configuração das página:
+ *      
+ *      Dependencias direta do site
+ * 
+ *
+ */
 
-class Pagina extends Site
+include_once 'Site.class.php';
+
+abstract class Pagina extends Site
 {
     protected $pagina_url;
+    protected $pagina_uri;
+    protected $pagina_atual;
     public    $pagina_titulo;
-    public    $pagina_view_dados;
+    public    $pagina_dados;
     private   $pagina_html;
 
 
@@ -12,16 +27,46 @@ class Pagina extends Site
     {
         parent::__construct();
         
-        $this->pagina_url     = $this->site_url . @$_GET['uri'];
-        $this->pagina_titulo  = $this->site_config['URI'][0] == $this->site_config['PAGINA_INICIAL'] ? $this->site_titulo : $this->pagina_titulo();
+        $this->pagina_url     = $this->pagina_url();
+        $this->pagina_uri     = explode("/", $this->pagina_uri());
+        $this->pagina_atual   = $this->site_url($this->pagina_uri());
+        $this->pagina_titulo  = $this->site_uri[0] == $this->site_homepage ? $this->site_titulo : $this->pagina_titulo();      
+        
+        include_once           'Html.class.php';
         $this->pagina_html    = new Html();
+        
+        if(!$this->site_url_index)
+        {
+            if($this->pagina_uri[0] == "index")
+                $this->pagina_redireciona();
+
+            elseif($this->pagina_uri[1] == "index")
+                $this->pagina_redireciona($this->pagina_uri[0]);
+        }
     }
-    
-    
+
+
+
+    protected function pagina_url($pg = '')
+    {
+        return $this->pagina_url = $this->site_url . @$this->pagina_uri() . ($pg == '' ? '' : '/' . $pg);
+    }
+
+
+
+
+    protected function pagina_uri()
+    {
+        return $_GET['uri'];
+    }
+
+
+
+
     public function pagina_titulo($tituloPagina = '')
     {
         if ($tituloPagina == '')
-            $subTituloSite = default_trata_uri($this->site_config['URI'][0], ' ');
+            $subTituloSite = default_trata_uri($this->site_uri[0], ' ');
 
         else
             $subTituloSite = $tituloPagina;
@@ -29,82 +74,143 @@ class Pagina extends Site
         return $this->pagina_titulo = $this->site_titulo . ' - ' . $subTituloSite;
     }
 
-    
+
+
+
     protected function pagina_redireciona($pg = '', $interno = TRUE)
     {
-        if ($interno)
+        if ($interno == true)
             $pg = $this->site_url($pg);
 
         echo '<script>location.href="' . $pg . '";</script>';
+        die;
     }
-    
-    
-    public function pagina_erro($viewErro = '404')
+
+
+
+
+    protected function pagina_voltar($indice = 1)
     {
-        $arquivo = $this->site_config['CAMINHOS']['APLICACAO'] . 'views/erros/' . $viewErro . $this->site_config['EXTENCOES']['Views'];
+        echo "<script>location.href(history.go(-$indice));</script>";
+        die;
+    }
+
+
+
+
+    public function pagina_erro($viewErro = '', $titulo = '')
+    {
+        if(($viewErro == 404 || $viewErro == 403) && $titulo != '')
+            exit("Para o erro $viewErro o titulo é o padão do setup...");
+        
+        if($viewErro == '' || $viewErro == 404)
+        {
+            $viewErro = 404;
+            $titulo  = $this->site_titulo_erros['404'];
+        }
+
+        elseif($viewErro == 403)
+            $titulo = $this->site_titulo_erros['403'];
+        
+        $arquivo = $this->site_caminhos['VIEWS'] . 'erros/' . $viewErro . $this->site_extencoes['Views'];
         
         if (file_exists($arquivo))
         {
+            $this->pagina_titulo = $titulo;
             $this->pagina_html();
             return require_once $arquivo;
         }
 
-        exit('Erro!<br>A view de erro "' . $viewErro . $this->site_config['EXTENCOES']['Views'] . '" não existe.');
+        exit('Erro!<br>A view de erro "' . $viewErro . $this->site_extencoes['Views'] . '" não existe.');
     }
-    
-    
+
+
+
+
     protected function pagina_view($view = '')
     {
+        
         if ($view == '')
-        {
-            $view[0] = $this->site_config['URI'][0];
-            $view[1] = $this->site_config['URI'][1];
-        }
+            $view = $this->site_uri;
 
         else
         {
             $view  = explode('/', $view);
+            
             for($i = 0; $i < 2; $i++)
             {
-                @$view[$i] = ((($view[$i] == NULL) || ($view[$i] == '')) ? $this->site_config['URI'][$i] : $view[$i] );
+                @$view[$i] = ((($view[$i] == NULL) || ($view[$i] == '')) ? $this->site_uri[$i] : $view[$i] );
             }
+            
+            $view  = array_filter($view);
         }
 
-        $view      = $view[0] . '/' . $view[1];
-        $arquivo   = $this->site_config['CAMINHOS']['APLICACAO'] . 'views/' . $view .  $this->site_config['EXTENCOES']['Views'];
+        $view      = implode('/', $view);
+        $arquivo   = $this->site_caminhos['VIEWS'] . $view .  $this->site_extencoes['Views'];
 
         if (file_exists($arquivo))
-        {
             return require_once $arquivo;
-        }
 
-        exit('Erro!<br>A view "' . $view . $this->site_config['EXTENCOES']['Views'] . '" não existe.');
+        exit('Erro!<br>A view "' . $view . $this->site_extencoes['Views'] . '" não existe.');
     }
-    
-    
+
+
+
+
     public function pagina_html()
     {
         $this->pagina_html->title($this->pagina_titulo);
         
-        if ($this->site_config['HTML_HEAD']['favicon'])
-            $this->pagina_html->favicon($this->site_url('img/favicon' . $this->site_config['EXTENCOES']['favicon']));
+        if ($this->site_cabecalho['favicon'])
+            $this->pagina_html->favicon($this->site_url('img/favicon' . $this->site_extencoes['favicon']));
         
-        $this->pagina_html->author($this->site_config['AUTOR_APLICACAO']);
-        $this->pagina_html->keywords($this->site_config['HTML_HEAD']['keywords']);
-        $this->pagina_html->description($this->site_config['HTML_HEAD']['description']);
-        
-        foreach ($this->site_config['HTML_HEAD']['css'] as $arquivo)
+        foreach ($this->site_cabecalho['css'] as $arquivo)
             $this->pagina_html->css($this->site_url('css/' . $arquivo));
         
-        foreach ($this->site_config['HTML_HEAD']['js'] as $arquivo)
-            $this->pagina_html->js($this->site_url('js/' . $arquivo));
+        foreach ($this->site_cabecalho['js'] as $arquivo)
+            $this->pagina_html->js_head($this->site_url('js/' . $arquivo));
+        
+        foreach ($this->site_rodape['js'] as $arquivo)
+            $this->pagina_html->js_footer($this->site_url('js/' . $arquivo));
+        
+        $this->pagina_html->author($this->site_author);
+        $this->pagina_html->contact($this->site_author_contato);
+        $this->pagina_html->keywords($this->site_cabecalho['keywords']);
+        $this->pagina_html->description($this->site_cabecalho['description']);
+        $this->pagina_html->copyright($this->site_copyright);
         
         $this->pagina_html->inicio();
     }
-    
+
+
+
+
+    public function pagina_add_js_head($nomeJs = '')
+    {
+        return array_push($this->site_cabecalho['js'], $nomeJs);
+    }
+
+
+
+
+    public function pagina_add_js_footer($nomeJs = '')
+    {
+        return array_push($this->site_rodape['js'], $nomeJs);
+    }
+
+
+
+
+    public function pagina_add_css($nomeCss = '')
+    {
+        return array_push($this->site_cabecalho['css'], $nomeCss);
+    }
+
+
+
+
     public function __destruct()
     {
-        if ($this->pagina_html->iniciou)
-            $this->pagina_html->fim();
+        $this->pagina_html->fim();
     }
 }
