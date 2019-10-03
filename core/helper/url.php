@@ -11,17 +11,28 @@
 
 function getBaseUrl()
 {
-    return 'http://' . $_SERVER['SERVER_NAME'] . '/';
+	$set = new Setup();
+    return $set->protocolo . $_SERVER['SERVER_NAME'] . '/' . $set->aliasApp;
 }
 
 
 function getUrl()
 {
-	return getBaseUrl() . $_GET['uri'];
+	return getBaseUrl() . getUri();
 }
 
 
 function getUri()
 {
-	return $_GET['uri'];
+	$alias = new Setup();
+	$alias = str_replace("/", "", $alias->aliasApp); 
+
+	$uri = explode("/", $_GET['uri']);
+
+	if ($alias == $uri[0])
+		unset($uri[0]);
+
+	$uri = implode($uri, '/');
+
+	return $uri; 
 }
