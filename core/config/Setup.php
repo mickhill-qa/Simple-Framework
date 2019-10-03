@@ -21,6 +21,7 @@ class Setup
 			'functions.php'
 		),
 		'class'		=> array(
+			'Mvc.class.php',
 			'Controller.class.php'
 		)
 	);

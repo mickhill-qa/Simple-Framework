@@ -1,9 +1,17 @@
 <?php
+/*
+ *-------------------------------------------------------
+ *              Simple MVC - Mick Hill
+ *-------------------------------------------------------
+ * 
+ *  Primeira pagina do site
+ *
+ */
 
 class IndexController extends Controller
 {
-    public function Index()
+    public function index()
     {
-        echo "Index Mick Hill";
+        echo "Index Pagina de Mick Hill";
     }
 }
