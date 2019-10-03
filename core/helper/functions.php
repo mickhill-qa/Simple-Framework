@@ -4,11 +4,13 @@
  *              Simple MVC - Mick Hill
  *-------------------------------------------------------
  * 
- *  Controlador Central
+ *  Funcoes auxiliares da Aplicacao
  *
  */
 
-class Controller extends Pagina
+function debug($_var)
 {
-    
+	echo "<pre>";
+	var_dump($_var);
+	echo "</pre>";
 }

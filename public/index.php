@@ -8,19 +8,17 @@
  *
  */
 
-// Caminhos relativos a esse arquivo. (Editavel)
-$config['CAMINHOS']['APLICACAO'] = '../app/';
-$config['CAMINHOS']['FRAMEWORK'] = '../app/core/';
+// PATH relativos a esse arquivo. (Editavel)
+$path['core']	= '../core/';
+$path['src']	= '../src/';
 
 
 
-// Caminhos padrões. (Não Editavel)
-$config['CAMINHOS']['PUBLIC']    = str_replace('\\', '/', __DIR__) . '/';
-$config['CAMINHOS']['APLICACAO'] = str_replace('\\', '/', realpath($config['CAMINHOS']['PUBLIC'] . $config['CAMINHOS']['APLICACAO'])) . '/';
-$config['CAMINHOS']['FRAMEWORK'] = str_replace('\\', '/', realpath($config['CAMINHOS']['PUBLIC'] . $config['CAMINHOS']['FRAMEWORK'])) . '/';
+// PATH padrões. (Não Editavel)
+$path['public']		= str_replace('\\', '/', __DIR__) . '/';
+$path['core']		= str_replace('\\', '/', realpath($path['public'] . $path['core'])) . '/';
+$path['src']		= str_replace('\\', '/', realpath($path['public'] . $path['src'])) . '/';
 
 
-
-require_once $config['CAMINHOS']['FRAMEWORK'] . 'class/FrontController.class.php';
-$bootstrap = new FrontController();
-$bootstrap->run();
+// Chamada do arquivo principal
+require_once $path['core'] . 'class/Main.class.php';
