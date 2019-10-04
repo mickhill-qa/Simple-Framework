@@ -4,12 +4,12 @@
  *              Simple MVC - Mick Hill
  *-------------------------------------------------------
  *
- *  Primeira pagina do site
+ *  Pagina de erro do site
  *
  */
 
-class IndexController extends Controller {
+class ErroController extends Controller {
 	public function index() {
-		echo "Index Pagina de Mick Hill";
+		echo "Pagina que redireciona para os erros";
 	}
 }

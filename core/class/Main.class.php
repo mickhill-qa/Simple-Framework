@@ -10,59 +10,49 @@
 
 require_once $path['core'].'config/Setup.php';
 
-class Main
-{
+class Main {
 	private $setup;
 
-	public function __construct()
-	{
+	public function __construct() {
 		$this->setup = new Setup();
 	}
 
-	public function run()
-	{
+	public function run() {
 		$this->autoload();
+		removeIndexIndexUri();
 
-		$mvc = new Mvc($this->setup->path['src']);
+		$mvc      = new Mvc();
+		$ctrl     = $mvc->getControllerFromUri(getUri());
+		$ctrlFile = $mvc->getDirController().$ctrl.'.php';
+		$method   = $mvc->getMethodFromUri(getUri());
 
-		$ctrl		= $mvc->getControllerFromUri(getUri());
-		$ctrlFile	= $mvc->getDirController() . $ctrl . '.php';
-		$method		= $mvc->getMethodFromUri(getUri());
-		
 		// Buscando por Controller
-		if (file_exists($ctrlFile))
-		{
-			require_once($ctrlFile);
+		if (file_exists($ctrlFile)) {
+			require_once ($ctrlFile);
 			$paginaAtual = new $ctrl();
-		}
-		else
-			$paginaAtual = new Controller();
+		} else {
 
-		if(!method_exists($paginaAtual, $method))
-		{
+			$paginaAtual = new Controller();
+		}
+
+		// Buscando por Metodo
+		if (!method_exists($paginaAtual, $method)) {
 			$method = 'erro404';
 		}
-		
+
 		$paginaAtual->$method();
 	}
 
-	private function autoload()
-	{
+	private function autoload() {
 		// Leitura de arquivos descriminados no setup.
-		foreach ($this->setup->autoload as $pasta => $arquivos)
-		{
-			if (count($this->setup->autoload[$pasta]) > 0)
-			{
-				foreach ($this->setup->autoload[$pasta] as $nomeArquivo)
-				{
+		foreach ($this->setup->autoload as $pasta => $arquivos) {
+			if (count($this->setup->autoload[$pasta]) > 0) {
+				foreach ($this->setup->autoload[$pasta] as $nomeArquivo) {
 					$arquivo = $this->setup->path['core'].$pasta.'/'.$nomeArquivo;
 
-					if (file_exists($arquivo))
-					{
+					if (file_exists($arquivo)) {
 						require_once $arquivo;
-					} else
-					{
-
+					} else {
 						exit(
 							'O arquivo "'.$nomeArquivo.'" não existe!<br />
                             Crie ele na pasta "'.$this->setup->path['core'].$pasta.'",<br />
