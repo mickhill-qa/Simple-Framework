@@ -10,6 +10,6 @@
 
 class IndexController extends Controller {
 	public function index() {
-		echo "Index Pagina de Mick Hill";
+		$this->view();
 	}
 }

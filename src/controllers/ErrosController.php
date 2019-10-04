@@ -8,8 +8,8 @@
  *
  */
 
-class ErroController extends Controller {
+class ErrosController extends Controller {
 	public function index() {
-		echo "Pagina que redireciona para os erros";
+		$this->erro404();
 	}
 }

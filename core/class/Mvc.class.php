@@ -61,4 +61,16 @@ class Mvc {
 		$method = implode('', $method);
 		return $method;
 	}
+
+	public function getViewFromUri($uri) {
+		// Se so tiver 1 parametro na uri adiciona a barra - /
+		if( count(explode("/", $uri)) < 2 ) {
+			$uri = $uri.'/';
+		}	
+		// Adiciona index quando o ultimo caracter for barra - /
+		if ( substr($uri, -1) == '/' ) {
+			$uri = $uri.$this->indexDefault;
+		}
+		return $uri;
+	}
 }

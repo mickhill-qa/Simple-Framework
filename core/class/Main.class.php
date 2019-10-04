@@ -17,6 +17,7 @@ class Main {
 		$this->setup = new Setup();
 	}
 
+	// Escolhe o Controller e Methodo
 	public function run() {
 		$this->autoload();
 		removeIndexIndexUri();
@@ -31,7 +32,6 @@ class Main {
 			require_once ($ctrlFile);
 			$paginaAtual = new $ctrl();
 		} else {
-
 			$paginaAtual = new Controller();
 		}
 
