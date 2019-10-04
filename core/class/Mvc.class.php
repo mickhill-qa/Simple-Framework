@@ -124,4 +124,8 @@ class Mvc {
 			exit('A View "'.$view.$this->extView.'" não existe!<br />');
 		}
 	}
+
+	public function includeModel($model = null) {
+		// A implementar
+	}
 }

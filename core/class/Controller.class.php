@@ -9,6 +9,12 @@
  */
 
 class Controller {
+	private $mvc;
+
+	public function __construct() {
+		$this->mvc = new Mvc();
+	}
+
 	public function erro404() {
 		$this->view('erros/erro404');
 	}
@@ -22,7 +28,10 @@ class Controller {
 	}
 
 	public function view($view = null) {
-		$mvc = new Mvc();
-		$mvc->includeView($view);
+		$this->mvc->includeView($view);
+	}
+
+	public function model($model = null) {
+		$this->mvc->includeModel($model);
 	}
 }
