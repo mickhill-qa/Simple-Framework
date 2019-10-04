@@ -22,25 +22,8 @@ class Main {
 		$this->autoload();
 		removeIndexIndexUri();
 
-		$mvc      = new Mvc();
-		$ctrl     = $mvc->getControllerFromUri(getUri());
-		$ctrlFile = $mvc->getDirController().$ctrl.'.php';
-		$method   = $mvc->getMethodFromUri(getUri());
-
-		// Buscando por Controller
-		if (file_exists($ctrlFile)) {
-			require_once ($ctrlFile);
-			$paginaAtual = new $ctrl();
-		} else {
-			$paginaAtual = new Controller();
-		}
-
-		// Buscando por Metodo
-		if (!method_exists($paginaAtual, $method)) {
-			$method = 'erro404';
-		}
-
-		$paginaAtual->$method();
+		$mvc = new Mvc();
+		$mvc->includeController();
 	}
 
 	private function autoload() {

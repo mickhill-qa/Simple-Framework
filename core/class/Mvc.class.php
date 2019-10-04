@@ -12,7 +12,10 @@ class Mvc {
 	private $dirModel      = 'models/';
 	private $dirView       = 'views/';
 	private $dirController = 'controllers/';
-	public $indexDefault   = 'index';
+	private $extModel      = '.php';
+	private $extView       = '.phtml';
+	private $extController = '.php';
+	private $indexDefault  = 'index';
 
 	public function __construct() {
 		$setup = new Setup();
@@ -23,19 +26,25 @@ class Mvc {
 		$this->dirController = $path.$this->dirController;
 	}
 
-	public function getDirModel() {
+	/*
+	 * Metodos que retornam os caminhos da aplicacao
+	 */
+	private function getDirModel() {
 		return $this->dirModel;
 	}
 
-	public function getDirView() {
+	private function getDirView() {
 		return $this->dirView;
 	}
 
-	public function getDirController() {
+	private function getDirController() {
 		return $this->dirController;
 	}
 
-	public function getControllerFromUri($uri) {
+	/*
+	 * Metodos relacionados a Uri
+	 */
+	private function getControllerFromUri($uri) {
 		$uri  = $uri == ''?$this->indexDefault:$uri;
 		$ctrl = explode("/", $uri);
 		$ctrl = $ctrl[0];
@@ -43,13 +52,12 @@ class Mvc {
 		for ($i = 0; $i < count($ctrl); $i++) {
 			$ctrl[$i] = ucfirst($ctrl[$i]);
 		}
-
 		$ctrl = implode('', $ctrl);
 		$ctrl = $ctrl.'Controller';
 		return $ctrl;
 	}
 
-	public function getMethodFromUri($uri) {
+	private function getMethodFromUri($uri) {
 		$method = explode("/", $uri);
 		$method = $method[1];
 		$method = $method == null?$this->indexDefault:$method;
@@ -62,15 +70,58 @@ class Mvc {
 		return $method;
 	}
 
-	public function getViewFromUri($uri) {
+	private function getViewFromUri($uri = null) {
+		if ($uri == null || $uri == '') {
+			$uriAtual = getUri();
+			if ($uriAtual == null || $uriAtual == '') {
+				$uri = $this->indexDefault;
+			} else {
+				$uri = $uriAtual;
+			}
+		}
 		// Se so tiver 1 parametro na uri adiciona a barra - /
-		if( count(explode("/", $uri)) < 2 ) {
+		if (count(explode("/", $uri)) < 2) {
 			$uri = $uri.'/';
-		}	
+		}
 		// Adiciona index quando o ultimo caracter for barra - /
-		if ( substr($uri, -1) == '/' ) {
+		if (substr($uri, -1) == '/') {
 			$uri = $uri.$this->indexDefault;
 		}
 		return $uri;
+	}
+
+	/*
+	 * Metodos criticos de inicializacao da aplicacao
+	 */
+	public function includeController() {
+		$ctrl     = $this->getControllerFromUri(getUri());
+		$ctrlFile = $this->getDirController().$ctrl.$this->extController;
+		$method   = $this->getMethodFromUri(getUri());
+
+		// Buscando por Controller
+		if (file_exists($ctrlFile)) {
+			require_once ($ctrlFile);
+			$paginaAtual = new $ctrl();
+		} else {
+			$paginaAtual = new Controller();
+		}
+
+		// Buscando por Metodo
+		if (!method_exists($paginaAtual, $method)) {
+			$method = 'erro404';
+		}
+
+		$paginaAtual->$method();
+	}
+
+	public function includeView($view = null) {
+		$view     = $this->getViewFromUri($view);
+		$viewFile = $this->getDirView().$view.$this->extView;
+		
+		if (file_exists($viewFile)) {
+			require_once $viewFile;
+		} else {
+			exit('A View "'.$view.$this->extView.'" não existe!<br />');
+		}
 	}
 }
