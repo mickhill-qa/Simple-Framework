@@ -16,15 +16,21 @@ class Mvc {
 	private $extView       = '.phtml';
 	private $extController = '.php';
 	private $indexDefault  = 'index';
+
+	public $setup;
+	public $html;
 	public $dados;
 
 	public function __construct() {
-		$setup = new Setup();
-		$path  = $setup->path['src'];
+		$this->setup = new Setup();
+		$this->html  = new Html();
+
+		$path = $this->setup->path['src'];
 
 		$this->dirModel      = $path.$this->dirModel;
 		$this->dirView       = $path.$this->dirView;
 		$this->dirController = $path.$this->dirController;
+
 	}
 
 	/*

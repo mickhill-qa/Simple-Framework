@@ -11,6 +11,8 @@
 class Setup {
 	public $nomeApp   = 'Simple Framework';
 	public $versaoApp = 'v0.3.0';
+	public $autor     = 'Mick Hill';
+	public $suporte   = 'mickhill@hotmail.com.br';
 
 	public $autoload = array(
 		'helper' => array(
@@ -20,12 +22,13 @@ class Setup {
 		'class' => array(
 			'Mvc.class.php',
 			'Controller.class.php',
+			'Html.class.php',
 		)
 	);
 
 	// Alterar tambem no .htaccess
-	public $aliasApp  = "";// "alias/"	ou ""
-	public $protocolo = 'http://';// "https://" ou "http://"
+	public $aliasApp  = "";//             "alias/"	ou ""
+	public $protocolo = 'http://';//      "https://" ou "http://"
 
 	public function __construct() {
 		global $path;
