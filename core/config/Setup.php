@@ -10,7 +10,7 @@
 
 class Setup {
 	public $nomeApp   = 'Simple Framework';
-	public $versaoApp = 'v0.0.3';
+	public $versaoApp = 'v0.3.0';
 
 	public $autoload = array(
 		'helper' => array(
