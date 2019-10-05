@@ -3,20 +3,19 @@
  *-------------------------------------------------------
  *              Simple MVC - Mick Hill
  *-------------------------------------------------------
- * 
+ *
  *  Arquivo de acesso (aplicação => cliente)
  *
  */
 
-// Caminhos relativos a esse arquivo. (Editavel)
-$config['CAMINHOS']['APLICACAO'] = '../app/';
-$config['CAMINHOS']['FRAMEWORK'] = '../app/core/';
+// PATH relativos a esse arquivo. (Editavel)
+$path['core'] = '../core/';
+$path['src']  = '../src/';
 
+// PATH padrões. (Não Editavel)
+$path['public'] = str_replace('\\', '/', __DIR__).'/';
+$path['core']   = str_replace('\\', '/', realpath($path['public'].$path['core'])).'/';
+$path['src']    = str_replace('\\', '/', realpath($path['public'].$path['src'])).'/';
 
-
-// Caminhos padrões. (Não Editavel)
-$config['CAMINHOS']['PUBLIC']    = str_replace('\\', '/', __DIR__) . '/';
-$config['CAMINHOS']['APLICACAO'] = $config['CAMINHOS']['PUBLIC'] . $config['CAMINHOS']['APLICACAO'];
-$config['CAMINHOS']['FRAMEWORK'] = $config['CAMINHOS']['PUBLIC'] . $config['CAMINHOS']['FRAMEWORK'];
-
-require_once $config['CAMINHOS']['FRAMEWORK'] . 'start.php';
+// Chamada do arquivo principal
+require_once $path['core'].'class/Main.class.php';

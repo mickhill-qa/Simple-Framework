@@ -3,12 +3,13 @@
  *-------------------------------------------------------
  *              Simple MVC - Mick Hill
  *-------------------------------------------------------
- * 
- *  Controlador Central
+ *
+ *  Primeira pagina do site
  *
  */
 
-class Controller extends Pagina
-{
-    
+class IndexController extends Controller {
+	public function index() {
+		$this->view();
+	}
 }
