@@ -16,6 +16,7 @@ class Mvc {
 	private $extView       = '.phtml';
 	private $extController = '.php';
 	private $indexDefault  = 'index';
+	public $dados;
 
 	public function __construct() {
 		$setup = new Setup();
@@ -117,7 +118,7 @@ class Mvc {
 	public function includeView($view = null) {
 		$view     = $this->getViewFromUri($view);
 		$viewFile = $this->getDirView().$view.$this->extView;
-		
+
 		if (file_exists($viewFile)) {
 			require_once $viewFile;
 		} else {
@@ -126,6 +127,23 @@ class Mvc {
 	}
 
 	public function includeModel($model = null) {
-		// A implementar
+		if ($model == null || $model == '') {
+			exit('Erro! Digite o nome do model...<br />');
+		} else {
+			$modelFile = $this->getDirModel().$model.$this->extModel;
+
+			if (file_exists($modelFile)) {
+				require_once $modelFile;
+			} else {
+				exit('O Model "'.$model.$this->extModel.'" não existe!<br />');
+			}
+		}
+	}
+
+	/*
+	 * Metodo de repasse de dados para View
+	 */
+	public function setDadosView($varArraObject = null) {
+		$this->dados = $varArraObject;
 	}
 }

@@ -31,6 +31,10 @@ class Controller {
 		$this->mvc->includeView($view);
 	}
 
+	public function viewSetDados($varArraObject = null) {
+		$this->mvc->setDadosView($varArraObject);
+	}
+
 	public function model($model = null) {
 		$this->mvc->includeModel($model);
 	}
