@@ -1,3 +1,9 @@
+<?php 
+    $this->html->title( $this->setup->nomeApp );
+    $this->html->author( $this->setup->autor );
+    $this->html->contact( $this->setup->suporte );
+    $this->html->exibirEstrutura();
+?>
 <h1>Not Found</h1>
 <p>A url solicitada "<code style="color: #196EEE;">/<?php echo getUri(); ?></code>" não foi encontrada em nosso servidor.</p>
 <a href="<?php echo getBaseUrl(); ?>">Página inicial.</a>
