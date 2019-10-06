@@ -99,6 +99,7 @@ class Html {
 
 	public function exibirEstruturaFim() {
 		if ($this->exibirInicio && !$this->exibirFim) {
+			$this->exibirFim = true;
 			echo $this->htmlJsFooter.'
     </body>
 </html>';
