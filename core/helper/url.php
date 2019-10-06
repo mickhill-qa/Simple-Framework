@@ -33,6 +33,14 @@ function getUri() {
 	return $uri;
 }
 
+function linkInterno($address = '') {
+	if ($address == '') {
+		exit("Digite o link interno desejado...<br>Ex.: linkInterno('css/style.css');<br>Retorno: UrlBase/css/style.css");
+	} else {
+		return getBaseUrl().$address;
+	}
+}
+
 function removeIndexIndexUri() {
 	$redirecionar = false;
 	$newUri       = array();
@@ -42,7 +50,6 @@ function removeIndexIndexUri() {
 		if ($uri[$i] != 'index') {
 			$newUri[] = $uri[$i];
 		} else {
-
 			$redirecionar = true;
 		}
 	}
