@@ -30,9 +30,9 @@ class Main
 				foreach ($this->setup->autoload[$pasta] as $nomeArquivo) {
 					$arquivo = $this->setup->path['core'].$pasta.'/'.$nomeArquivo;
 
-					if (file_exists($arquivo)) {
+					if (file_exists($arquivo))
 						require_once $arquivo;
-					} else {
+					else {
 						exit(
 							'O arquivo "'.$nomeArquivo.'" não existe!<br />
                             Crie ele na pasta "'.$this->setup->path['core'].$pasta.'",<br />

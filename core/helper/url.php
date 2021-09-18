@@ -51,28 +51,28 @@ function removeIndexIndexUri()
 	$newUri       = array();
 	$uri          = explode("/", $_SERVER['REQUEST_URI']);
 
-	for ($i = 0; $i <= 3; $i++) {
-		if ($uri[$i] != 'index') {
+	for ($i = 0; $i < count($uri); $i++) {
+		if ($uri[$i] != 'index')
 			$newUri[] = $uri[$i];
-		} else {
+		else
 			$redirecionar = true;
-		}
 	}
 
 	$newUri = array_filter($newUri);
 	$newUri = implode($newUri, '/');
 
-	if ($redirecionar) {
-		redirectToUri($newUri);
-	}
+	if ($redirecionar)
+        redirectToUri($newUri);
 }
 
 function redirectToUri($uri)
 {
 	header("Location: ".getBaseUrl().$uri);
+    die;
 }
 
 function redirectToUrl($url)
 {
 	header("Location: ".$url);
+    die;
 }
