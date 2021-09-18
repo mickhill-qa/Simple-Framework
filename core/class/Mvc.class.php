@@ -27,12 +27,9 @@ class Mvc
 		$this->setup = new Setup();
 		$this->html  = new Html();
 
-		$path = $this->setup->path['src'];
-
-		$this->dirModel      = $path.$this->dirModel;
-		$this->dirView       = $path.$this->dirView;
-		$this->dirController = $path.$this->dirController;
-
+		$this->dirModel      = $this->setup->path['src'].$this->dirModel;
+		$this->dirView       = $this->setup->path['src'].$this->dirView;
+		$this->dirController = $this->setup->path['src'].$this->dirController;
 	}
 
 	/*
@@ -74,7 +71,7 @@ class Mvc
     {
 		$method = explode("/", $uri);
 		$method = $method[1];
-		$method = $method == null?$this->indexDefault:$method;
+		$method = ($method == null ? $this->indexDefault : $method);
 		$method = explode('-', $method);
 		for ($i = 1; $i < count($method); $i++) {
 			$method[$i] = ucfirst($method[$i]);
@@ -114,17 +111,19 @@ class Mvc
 		$ctrlFile = $this->getDirController().$ctrl.$this->extController;
 		$method   = $this->getMethodFromUri(getUri());
 
-		// Buscando por Controller
-		if (file_exists($ctrlFile)) {
-			require_once ($ctrlFile);
-			$paginaAtual = new $ctrl();
-		} else {
-			$paginaAtual = new Controller();
+		// Se o controller na URL na existir apontar para ErrosController
+		if (!file_exists($ctrlFile)) {
+            $ctrl = $this->getControllerFromUri("Erros");
+            $ctrlFile = $this->getDirController().$ctrl.$this->extController;
 		}
+
+        require_once ($ctrlFile);
+        $paginaAtual = new $ctrl();
+
 
 		// Buscando por Metodo
 		if (!method_exists($paginaAtual, $method)) {
-			$method = 'erro404';
+			$method = '_404';
 		}
 
 		$paginaAtual->$method();

@@ -10,8 +10,19 @@
 
 class ErrosController extends Controller
 {
-	public function index()
+	public function _404()
     {
-		$this->erro404();
+        http_response_code(404);
+        $this->view('erros/404');
 	}
+
+    public function _403()
+    {
+        http_response_code(403);
+    }
+
+    public function _500()
+    {
+        http_response_code(500);
+    }
 }
