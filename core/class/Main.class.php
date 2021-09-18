@@ -8,26 +8,23 @@
  *
  */
 
-require_once $path['core'].'config/Setup.php';
-
-class Main {
+class Main
+{
 	private $setup;
 
-	public function __construct() {
+	public function __construct()
+    {
+        $setupFilePath  = 'config/Setup.php';
+        $setupFilePath  = __DIR__ . '/../' . $setupFilePath;
+        $setupFilePath  = str_replace( '\\', '/', realpath($setupFilePath) );
+
+        require_once $setupFilePath;
 		$this->setup = new Setup();
 	}
 
-	// Escolhe o Controller e Methodo
-	public function run() {
-		$this->autoload();
-		removeIndexIndexUri();
-
-		$mvc = new Mvc();
-		$mvc->includeController();
-	}
-
-	private function autoload() {
-		// Leitura de arquivos descriminados no setup.
+    // Leitura de arquivos descriminados no setup.
+	private function autoload()
+    {
 		foreach ($this->setup->autoload as $pasta => $arquivos) {
 			if (count($this->setup->autoload[$pasta]) > 0) {
 				foreach ($this->setup->autoload[$pasta] as $nomeArquivo) {
@@ -46,8 +43,14 @@ class Main {
 			}
 		}
 	}
-}
 
-// Execucao da Aplicacao
-$bootstrap = new Main();
-$bootstrap->run();
+    // Escolhe o Controller e Methodo
+    public function run()
+    {
+        $this->autoload();
+        removeIndexIndexUri();
+
+        $mvc = new Mvc();
+        $mvc->includeController();
+    }
+}

@@ -13,6 +13,7 @@ class Setup {
 	public $versaoApp = 'v0.5.0';
 	public $autor     = 'Mick Hill';
 	public $suporte   = 'mickhill@hotmail.com.br';
+    public $path;
 
 	public $autoload = array(
 		'helper' => array(
