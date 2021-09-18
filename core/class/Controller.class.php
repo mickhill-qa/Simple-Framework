@@ -16,14 +16,17 @@ class Controller {
 	}
 
 	public function erro404() {
+        http_response_code(404);
 		$this->view('erros/erro404');
 	}
 
 	public function erro403() {
+        http_response_code(403);
 		$this->view('erros/erro403');
 	}
 
 	public function erro500() {
+        http_response_code(500);
 		$this->view('erros/erro500');
 	}
 

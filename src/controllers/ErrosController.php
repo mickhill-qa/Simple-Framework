@@ -8,8 +8,10 @@
  *
  */
 
-class ErrosController extends Controller {
-	public function index() {
+class ErrosController extends Controller
+{
+	public function index()
+    {
 		$this->erro404();
 	}
 }

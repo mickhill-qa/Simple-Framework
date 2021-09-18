@@ -10,7 +10,7 @@
 
 class Setup {
 	public $nomeApp   = 'Simple Framework';
-	public $versaoApp = 'v0.3.0';
+	public $versaoApp = 'v0.5.0';
 	public $autor     = 'Mick Hill';
 	public $suporte   = 'mickhill@hotmail.com.br';
 
