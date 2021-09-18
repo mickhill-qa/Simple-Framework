@@ -8,7 +8,8 @@
  *
  */
 
-class Mvc {
+class Mvc
+{
 	private $dirModel      = 'models/';
 	private $dirView       = 'views/';
 	private $dirController = 'controllers/';
@@ -21,7 +22,8 @@ class Mvc {
 	public $html;
 	public $dados;
 
-	public function __construct() {
+	public function __construct()
+    {
 		$this->setup = new Setup();
 		$this->html  = new Html();
 
@@ -36,22 +38,26 @@ class Mvc {
 	/*
 	 * Metodos que retornam os caminhos da aplicacao
 	 */
-	private function getDirModel() {
+	private function getDirModel()
+    {
 		return $this->dirModel;
 	}
 
-	private function getDirView() {
+	private function getDirView()
+    {
 		return $this->dirView;
 	}
 
-	private function getDirController() {
+	private function getDirController()
+    {
 		return $this->dirController;
 	}
 
 	/*
 	 * Metodos relacionados a Uri
 	 */
-	private function getControllerFromUri($uri) {
+	private function getControllerFromUri($uri)
+    {
 		$uri  = $uri == ''?$this->indexDefault:$uri;
 		$ctrl = explode("/", $uri);
 		$ctrl = $ctrl[0];
@@ -64,7 +70,8 @@ class Mvc {
 		return $ctrl;
 	}
 
-	private function getMethodFromUri($uri) {
+	private function getMethodFromUri($uri)
+    {
 		$method = explode("/", $uri);
 		$method = $method[1];
 		$method = $method == null?$this->indexDefault:$method;
@@ -77,7 +84,8 @@ class Mvc {
 		return $method;
 	}
 
-	private function getViewFromUri($uri = null) {
+	private function getViewFromUri($uri = null)
+    {
 		if ($uri == null || $uri == '') {
 			$uriAtual = getUri();
 			if ($uriAtual == null || $uriAtual == '') {
@@ -100,7 +108,8 @@ class Mvc {
 	/*
 	 * Metodos criticos de inicializacao da aplicacao
 	 */
-	public function includeController() {
+	public function includeController()
+    {
 		$ctrl     = $this->getControllerFromUri(getUri());
 		$ctrlFile = $this->getDirController().$ctrl.$this->extController;
 		$method   = $this->getMethodFromUri(getUri());
@@ -121,7 +130,8 @@ class Mvc {
 		$paginaAtual->$method();
 	}
 
-	public function includeView($view = null) {
+	public function includeView($view = null)
+    {
 		$view     = $this->getViewFromUri($view);
 		$viewFile = $this->getDirView().$view.$this->extView;
 
@@ -132,7 +142,8 @@ class Mvc {
 		}
 	}
 
-	public function includeModel($model = null) {
+	public function includeModel($model = null)
+    {
 		if ($model == null || $model == '') {
 			exit('Erro! Digite o nome do model...<br />');
 		} else {
@@ -149,7 +160,8 @@ class Mvc {
 	/*
 	 * Metodo de repasse de dados para View
 	 */
-	public function setDadosView($varArraObject = null) {
+	public function setDadosView($varArraObject = null)
+    {
 		$this->dados = $varArraObject;
 	}
 }

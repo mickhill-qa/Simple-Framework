@@ -8,7 +8,8 @@
  *
  */
 
-class Setup {
+class Setup
+{
 	public $nomeApp   = 'Simple Framework';
 	public $versaoApp = 'v0.5.0';
 	public $autor     = 'Mick Hill';
@@ -28,10 +29,11 @@ class Setup {
 	);
 
 	// Alterar tambem no .htaccess
-	public $aliasApp  = "";//             "alias/"	ou ""
-	public $protocolo = 'http://';//      "https://" ou "http://"
+	public $aliasApp  = "";             // "alias/"	ou ""
+	public $protocolo = 'http://';      // "https://" ou "http://"
 
-	public function __construct() {
+	public function __construct()
+    {
 		global $path;
 		$this->path = $path;
 	}

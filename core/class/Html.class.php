@@ -8,7 +8,8 @@
  *
  */
 
-class Html {
+class Html
+{
 	private $htmlTitle;
 	private $htmlKeywords;
 	private $htmlDescription;
@@ -23,57 +24,68 @@ class Html {
 	private $exibirInicio = false;
 	private $exibirFim    = false;
 
-	public function title($title = '') {
+	public function title($title = '')
+    {
 		$this->htmlTitle = "
         <title>$title</title>";
 	}
 
-	public function keywords($keywords = '') {
+	public function keywords($keywords = '')
+    {
 		$this->htmlKeywords = '
         <meta   name="keywords"        content="'.$keywords.'" />';
 	}
 
-	public function description($description = '') {
+	public function description($description = '')
+    {
 		$this->htmlDescription = '
         <meta   name="description"     content="'.$description.'" />';
 	}
 
-	public function copyright($copyright = '') {
+	public function copyright($copyright = '')
+    {
 		$this->htmlCopyright = '
         <meta   name="copyright"       content="'.$copyright.'" />';
 	}
 
-	public function favicon($arquivo = '') {
+	public function favicon($arquivo = '')
+    {
 		$this->htmlFavicon = '
 		<link   rel="shortcut icon"    href="'.$arquivo.'" />';
 	}
 
-	public function css($arquivo = "") {
+	public function css($arquivo = "")
+    {
 		$this->htmlCss .= '
         <link   type="text/css"        href="'.$arquivo.'.css" rel="stylesheet" />';
 	}
 
-	public function jsHead($arquivo = "") {
+	public function jsHead($arquivo = "")
+    {
 		$this->htmlJsHead .= '
         <script type="text/javascript" src="'.$arquivo.'.js"></script>';
 	}
 
-	public function jsFooter($arquivo = "") {
+	public function jsFooter($arquivo = "")
+    {
 		$this->htmlJsFooter .= '
         <script type="text/javascript" src="'.$arquivo.'.js"></script>';
 	}
 
-	public function author($author = '') {
+	public function author($author = '')
+    {
 		$this->htmlAuthor = '
         <meta   name="author"          content="'.$author.'" />';
 	}
 
-	public function contact($contact = '') {
+	public function contact($contact = '')
+    {
 		$this->htmlContact = '
         <meta   name="contact"         content="'.$contact.'" />';
 	}
 
-	public function exibirEstrutura() {
+	public function exibirEstrutura()
+    {
 		$this->exibirInicio = true;
 		echo '<!doctype html>
 <html lang="pt-br">
@@ -97,7 +109,8 @@ class Html {
 ';
 	}
 
-	public function exibirEstruturaFim() {
+	public function exibirEstruturaFim()
+    {
 		if ($this->exibirInicio && !$this->exibirFim) {
 			$this->exibirFim = true;
 			echo $this->htmlJsFooter.'
@@ -106,7 +119,8 @@ class Html {
 		}
 	}
 
-	public function __destruct() {
+	public function __destruct()
+    {
 		$this->exibirEstruturaFim();
 	}
 }
