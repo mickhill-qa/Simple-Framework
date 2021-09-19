@@ -35,7 +35,7 @@ class Mvc
 	/*
 	 * Metodos relacionados a Uri
 	 */
-	private function getControllerFromUri($uri)
+	private function getNameControllerFromUri($uri)
     {
 		$uri  = ($uri == ''? $this->indexDefault : $uri);
 		$ctrl = explode("/", $uri);
@@ -48,7 +48,7 @@ class Mvc
 		return $ctrl;
 	}
 
-	private function getMethodFromUri($uri)
+	private function getNameMethodFromUri($uri)
     {
 		$method = explode("/", $uri);
 		$method = $method[1];
@@ -60,7 +60,7 @@ class Mvc
 		return $method;
 	}
 
-	private function getViewFromUri($uri = null)
+	private function getNameViewFromUri($uri = null)
     {
 		if ($uri == null || $uri == '') {
 			$uriAtual = getUri();
@@ -86,29 +86,28 @@ class Mvc
 	 */
 	public function includeController()
     {
-		$ctrl     = $this->getControllerFromUri(getUri());
+		$ctrl     = $this->getNameControllerFromUri(getUri());
 		$ctrlFile = $this->dirController.$ctrl.$this->extController;
-		$method   = $this->getMethodFromUri(getUri());
+		$method   = $this->getNameMethodFromUri(getUri());
 
-		// Se o controller na URL na existir apontar para ErrosController
-		if (!file_exists($ctrlFile)) {
-            $ctrl = $this->getControllerFromUri("Erros");
-            $ctrlFile = $this->dirController.$ctrl.$this->extController;
-		}
+		// Se o controller na URL nao existir apontar para Controller
+		if ( file_exists($ctrlFile) )
+            require_once($ctrlFile);
+        else
+            $ctrl = "Controller";
 
-        require_once ($ctrlFile);
         $paginaAtual = new $ctrl();
 
 		// Buscando por Metodo
 		if (!method_exists($paginaAtual, $method))
-			$method = '_404';
+			$method = 'erro404';
 
 		$paginaAtual->$method();
 	}
 
 	public function includeView($view = null)
     {
-		$view     = $this->getViewFromUri($view);
+		$view     = $this->getNameViewFromUri($view);
 		$viewFile = $this->dirView.$view.$this->extView;
 
 		if (file_exists($viewFile))
