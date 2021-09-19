@@ -9,16 +9,19 @@
  *
  */
 
-function getBaseUrl() {
+function getBaseUrl()
+{
 	$set = new Setup();
 	return $set->protocolo.$_SERVER['SERVER_NAME'].'/'.$set->aliasApp;
 }
 
-function getUrl() {
+function getUrl()
+{
 	return getBaseUrl().getUri();
 }
 
-function getUri() {
+function getUri()
+{
 	$alias = new Setup();
 	$alias = str_replace("/", "", $alias->aliasApp);
 
@@ -33,7 +36,8 @@ function getUri() {
 	return $uri;
 }
 
-function linkInterno($address = '') {
+function linkInterno($address = '')
+{
 	if ($address == '') {
 		exit("Digite o link interno desejado...<br>Ex.: linkInterno('css/style.css');<br>Retorno: UrlBase/css/style.css");
 	} else {
@@ -41,31 +45,34 @@ function linkInterno($address = '') {
 	}
 }
 
-function removeIndexIndexUri() {
+function removeIndexIndexUri()
+{
 	$redirecionar = false;
 	$newUri       = array();
 	$uri          = explode("/", $_SERVER['REQUEST_URI']);
 
-	for ($i = 0; $i <= 3; $i++) {
-		if ($uri[$i] != 'index') {
+	for ($i = 0; $i < count($uri); $i++) {
+		if ($uri[$i] != 'index')
 			$newUri[] = $uri[$i];
-		} else {
+		else
 			$redirecionar = true;
-		}
 	}
 
 	$newUri = array_filter($newUri);
 	$newUri = implode($newUri, '/');
 
-	if ($redirecionar) {
-		redirectToUri($newUri);
-	}
+	if ($redirecionar)
+        redirectToUri($newUri);
 }
 
-function redirectToUri($uri) {
+function redirectToUri($uri)
+{
 	header("Location: ".getBaseUrl().$uri);
+    die;
 }
 
-function redirectToUrl($url) {
+function redirectToUrl($url)
+{
 	header("Location: ".$url);
+    die;
 }

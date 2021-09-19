@@ -19,3 +19,7 @@ $path['src']    = str_replace('\\', '/', realpath($path['public'].$path['src']))
 
 // Chamada do arquivo principal
 require_once $path['core'].'class/Main.class.php';
+
+// Execucao da Aplicacao
+$bootstrap = new Main();
+$bootstrap->run();

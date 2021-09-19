@@ -8,7 +8,8 @@
  *
  */
 
-class Mvc {
+class Mvc
+{
 	private $dirModel      = 'models/';
 	private $dirView       = 'views/';
 	private $dirController = 'controllers/';
@@ -21,135 +22,120 @@ class Mvc {
 	public $html;
 	public $dados;
 
-	public function __construct() {
+	public function __construct()
+    {
 		$this->setup = new Setup();
 		$this->html  = new Html();
 
-		$path = $this->setup->path['src'];
-
-		$this->dirModel      = $path.$this->dirModel;
-		$this->dirView       = $path.$this->dirView;
-		$this->dirController = $path.$this->dirController;
-
-	}
-
-	/*
-	 * Metodos que retornam os caminhos da aplicacao
-	 */
-	private function getDirModel() {
-		return $this->dirModel;
-	}
-
-	private function getDirView() {
-		return $this->dirView;
-	}
-
-	private function getDirController() {
-		return $this->dirController;
+		$this->dirModel      = $this->setup->path['src'].$this->dirModel;
+		$this->dirView       = $this->setup->path['src'].$this->dirView;
+		$this->dirController = $this->setup->path['src'].$this->dirController;
 	}
 
 	/*
 	 * Metodos relacionados a Uri
 	 */
-	private function getControllerFromUri($uri) {
-		$uri  = $uri == ''?$this->indexDefault:$uri;
+	private function getControllerFromUri($uri)
+    {
+		$uri  = ($uri == ''? $this->indexDefault : $uri);
 		$ctrl = explode("/", $uri);
 		$ctrl = $ctrl[0];
 		$ctrl = explode('-', $ctrl);
-		for ($i = 0; $i < count($ctrl); $i++) {
+		for ($i = 0; $i < count($ctrl); $i++)
 			$ctrl[$i] = ucfirst($ctrl[$i]);
-		}
 		$ctrl = implode('', $ctrl);
 		$ctrl = $ctrl.'Controller';
 		return $ctrl;
 	}
 
-	private function getMethodFromUri($uri) {
+	private function getMethodFromUri($uri)
+    {
 		$method = explode("/", $uri);
 		$method = $method[1];
-		$method = $method == null?$this->indexDefault:$method;
+		$method = ($method == null ? $this->indexDefault : $method);
 		$method = explode('-', $method);
-		for ($i = 1; $i < count($method); $i++) {
+		for ($i = 1; $i < count($method); $i++)
 			$method[$i] = ucfirst($method[$i]);
-		}
-
 		$method = implode('', $method);
 		return $method;
 	}
 
-	private function getViewFromUri($uri = null) {
+	private function getViewFromUri($uri = null)
+    {
 		if ($uri == null || $uri == '') {
 			$uriAtual = getUri();
-			if ($uriAtual == null || $uriAtual == '') {
+			if ($uriAtual == null || $uriAtual == '')
 				$uri = $this->indexDefault;
-			} else {
+			else
 				$uri = $uriAtual;
-			}
 		}
+
 		// Se so tiver 1 parametro na uri adiciona a barra - /
-		if (count(explode("/", $uri)) < 2) {
+		if (count(explode("/", $uri)) < 2)
 			$uri = $uri.'/';
-		}
-		// Adiciona index quando o ultimo caracter for barra - /
-		if (substr($uri, -1) == '/') {
+
+        // Adiciona index quando o ultimo caracter for barra - /
+		if (substr($uri, -1) == '/')
 			$uri = $uri.$this->indexDefault;
-		}
-		return $uri;
+
+        return $uri;
 	}
 
 	/*
 	 * Metodos criticos de inicializacao da aplicacao
 	 */
-	public function includeController() {
+	public function includeController()
+    {
 		$ctrl     = $this->getControllerFromUri(getUri());
-		$ctrlFile = $this->getDirController().$ctrl.$this->extController;
+		$ctrlFile = $this->dirController.$ctrl.$this->extController;
 		$method   = $this->getMethodFromUri(getUri());
 
-		// Buscando por Controller
-		if (file_exists($ctrlFile)) {
-			require_once ($ctrlFile);
-			$paginaAtual = new $ctrl();
-		} else {
-			$paginaAtual = new Controller();
+		// Se o controller na URL na existir apontar para ErrosController
+		if (!file_exists($ctrlFile)) {
+            $ctrl = $this->getControllerFromUri("Erros");
+            $ctrlFile = $this->dirController.$ctrl.$this->extController;
 		}
 
+        require_once ($ctrlFile);
+        $paginaAtual = new $ctrl();
+
 		// Buscando por Metodo
-		if (!method_exists($paginaAtual, $method)) {
-			$method = 'erro404';
-		}
+		if (!method_exists($paginaAtual, $method))
+			$method = '_404';
 
 		$paginaAtual->$method();
 	}
 
-	public function includeView($view = null) {
+	public function includeView($view = null)
+    {
 		$view     = $this->getViewFromUri($view);
-		$viewFile = $this->getDirView().$view.$this->extView;
+		$viewFile = $this->dirView.$view.$this->extView;
 
-		if (file_exists($viewFile)) {
+		if (file_exists($viewFile))
 			require_once $viewFile;
-		} else {
+		else
 			exit('A View "'.$view.$this->extView.'" não existe!<br />');
-		}
 	}
 
-	public function includeModel($model = null) {
-		if ($model == null || $model == '') {
+	public function includeModel($model = null)
+    {
+		if ($model == null || $model == '')
 			exit('Erro! Digite o nome do model...<br />');
-		} else {
-			$modelFile = $this->getDirModel().$model.$this->extModel;
+		else {
+			$modelFile = $this->dirModel.$model.$this->extModel;
 
-			if (file_exists($modelFile)) {
+			if (file_exists($modelFile))
 				require_once $modelFile;
-			} else {
+			else
 				exit('O Model "'.$model.$this->extModel.'" não existe!<br />');
-			}
 		}
 	}
 
 	/*
 	 * Metodo de repasse de dados para View
 	 */
-	public function setDadosView($varArraObject = null) {
+	public function setDadosView($varArraObject = null)
+    {
 		$this->dados = $varArraObject;
 	}
 }
