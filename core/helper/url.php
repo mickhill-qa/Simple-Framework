@@ -48,7 +48,7 @@ function removeIndexIndexUri()
 {
 	$redirecionar = false;
 	$newUri       = array();
-	$uri          = explode("/", $_SERVER['REQUEST_URI']);
+	$uri          = explode("/", $_GET['uri']);
 
 	for ($i = 0; $i < count($uri); $i++) {
 		if ($uri[$i] != 'index')
