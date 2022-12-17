@@ -29,7 +29,7 @@ class Setup
 	);
 
 	// Alterar tambem no .htaccess
-	public $aliasApp  = "";             // "alias/"	ou ""
+	public $aliasApp  = "alias-simple-framework/";             // "alias/"	ou ""
 	public $protocolo = 'http://';      // "https://" ou "http://"
 
 	public function __construct()

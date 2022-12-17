@@ -1,5 +1,5 @@
 # Definindo Alias
-RewriteBase /
+RewriteBase /alias-simple-framework/
 
 # Ativando modo de reescrita na url
 RewriteEngine on
@@ -13,8 +13,8 @@ RewriteRule ^(.*)$ index.php?uri=$1 [QSA]
     ## [QSA] significa que se há uma sequência de consulta passou com a URL original, ele será anexado ao reescrever.
 
 # Redirecionar de www a sem-www
-RewriteCond %{HTTP_HOST} ^www.(.*) [NC]
-RewriteRule ^(.*) http://%1/$1 [R=301,L]
+#RewriteCond %{HTTP_HOST} ^www.(.*) [NC]
+#RewriteRule ^(.*) http://%1/$1 [R=301,L]
     ## [L] significa que se a regra corresponder, não processar mais RewriteRules abaixo deste.
 
 # Redirecionar de sem-www para www
