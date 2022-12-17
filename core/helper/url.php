@@ -22,18 +22,17 @@ function getUrl()
 
 function getUri()
 {
-	$alias = new Setup();
-	$alias = str_replace("/", "", $alias->aliasApp);
+	$setup = new Setup();
+    $alias = str_replace("/", "", $setup->aliasApp);
 
-	$uri = explode("/", $_GET['uri']);
-
+    $uri = explode("/", $_GET['uri']);
 	if ($alias == $uri[0]) {
 		unset($uri[0]);
 	}
 
-	$uri = implode($uri, '/');
+	$uri = implode('/', $uri);
 
-	return $uri;
+    return $uri;
 }
 
 function linkInterno($address = '')
@@ -59,7 +58,7 @@ function removeIndexIndexUri()
 	}
 
 	$newUri = array_filter($newUri);
-	$newUri = implode($newUri, '/');
+	$newUri = implode('/', $newUri);
 
 	if ($redirecionar)
         redirectToUri($newUri);
